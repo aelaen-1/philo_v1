@@ -33,7 +33,8 @@ static void    philos_init(struct Philosopher *philos, struct Fork *forks, struc
     i = 0;
     while(i < diner->nb_of_philos) // pour que les threads se lancent plus "en meme temps"
     {
-        pthread_create(&philos[i].thread, NULL, start_living, &philos[i]);
+        if (pthread_create(&philos[i].thread, NULL, start_living, &philos[i]) != 0)
+            printf("Couldn't create thread of philo %d", philos->id);
         i++;
     }
 }
@@ -47,6 +48,7 @@ void    init_philos_and_forks(struct Philosopher *philos, struct Fork *forks, st
 void init_input(int ac, char **av, struct Diner *diner)
 {
     pthread_mutex_init(&diner->is_dead_mutex, NULL);
+    pthread_mutex_init(&diner->log_mutex, NULL);
     diner->program_start = time_now_ms(0);
     diner->sb_is_dead = 0;
     diner->dead_philo_id = -1;
