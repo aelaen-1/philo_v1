@@ -1,11 +1,23 @@
 #include "include/philo.h"
 
+static void ft_write_log(struct Philosopher *p, char *s)
+{
+    if (!pthread_mutex_lock(&p->diner_infos->log_mutex))
+    {
+        printf("%lld %d %s\n", time_now_ms(p->diner_infos->program_start), p->id, s);
+        pthread_mutex_unlock(&p->diner_infos->log_mutex);
+        return ;
+    }
+    else
+        ft_write_log(p, s);
+}
+
 int    philosopher_eat(struct Philosopher *p)
 {
     p->last_eaten = time_now_ms(p->diner_infos->program_start);
     p->state = EATING;
     p->meal_counter += 1;
-    printf(MAG "%lld %d is eating\n", time_now_ms(p->diner_infos->program_start), p->id);
+    ft_write_log(p, MAG "is eating");
     usleep(min(p->diner_infos->time_to_eat, p->diner_infos->time_to_eat) * 1000);
     release_fork(p->left_fork);
     release_fork(p->right_fork);
@@ -15,7 +27,7 @@ int    philosopher_eat(struct Philosopher *p)
 int    philosopher_sleep(struct Philosopher *p)
 {
     p->state = SLEEPING;
-    printf(WHT "%lld %d is sleeping\n", time_now_ms(p->diner_infos->program_start),p->id);
+    ft_write_log(p, WHT "is sleeping");
     usleep(min(p->diner_infos->time_to_die, p->diner_infos->time_to_sleep) * 1000);
     return (1);
 }
@@ -24,7 +36,7 @@ int    philosopher_think(struct Philosopher *p)
 {
     if (p->state != THINKING)
     {
-        printf(GRN "%lld %d is thinking\n", time_now_ms(p->diner_infos->program_start),p->id);
+        ft_write_log(p, GRN "is thinking");
         p->state = THINKING;
     }
     return (1);
@@ -83,6 +95,6 @@ void    *start_living(void *p)
             break ;
     }
     if (myself->diner_infos->sb_is_dead && (myself->diner_infos->dead_philo_id == myself->id))
-        printf(BHRED "%lld %d died\n", time_now_ms(myself->diner_infos->program_start),myself->diner_infos->dead_philo_id);
+        ft_write_log(p, BHRED "died");
     return (0);
 }
