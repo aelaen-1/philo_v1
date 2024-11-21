@@ -41,6 +41,7 @@ struct Diner{
         int     nb_of_meals;
         int     sb_is_dead;
         int     dead_philo_id;
+        pthread_mutex_t log_mutex;
         pthread_mutex_t is_dead_mutex;
         TimeMs  program_start;
 };
