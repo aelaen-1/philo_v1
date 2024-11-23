@@ -6,7 +6,7 @@
 #    By: aelaen <aelaen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/08 12:57:07 by aboukezi          #+#    #+#              #
-#    Updated: 2024/11/15 15:44:36 by aelaen           ###   ########.fr        #
+#    Updated: 2024/11/22 19:11:03 by aelaen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,11 @@ FLAGS = -Wall -Werror -Wextra
 # valgrind --tool=helgrind ./multi_thread_loop_mutex
 
 SRC = main.c \
-	  arg_check.c \
-	  set_diner.c \
-      utils.c \
+      input_check.c \
+	  set_the_table.c \
 	  actions.c \
-	  threads.c
+	  check_if_end.c \
+      utils.c 
 
 OBJ = $(SRC:.c=.o)
 

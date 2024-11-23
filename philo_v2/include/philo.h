@@ -6,7 +6,7 @@
 /*   By: aelaen <aelaen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:57:15 by aboukezi          #+#    #+#             */
-/*   Updated: 2024/11/19 16:15:35 by aelaen           ###   ########.fr       */
+/*   Updated: 2024/11/22 19:21:20 by aelaen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,16 @@ enum State{
 };
 
 struct Diner{
+        // struct args *input;
         int     nb_of_philos;
         int     time_to_die;
         int     time_to_eat;
         int     time_to_sleep;
         int     nb_of_meals;
+        int     all_ate;
         int     sb_is_dead;
         int     dead_philo_id;
-        int     all_ate;
+        pthread_mutex_t all_ate_mutex;
         pthread_mutex_t log_mutex;
         pthread_mutex_t is_dead_mutex;
         TimeMs  program_start;
@@ -48,9 +50,7 @@ struct Diner{
 struct  Philosopher{
     pthread_t thread;
     struct Diner *diner_infos;
-    int     index;
     int     id;
-    int     is_eating;
     int     meal_counter;
     int     last_eaten;
     enum State      state;
@@ -65,29 +65,32 @@ struct  Fork{
 };
 
 
-//              INIT : set_diner.c
+//              INIT : 
+        /*   input_check.c  */
 int     error_input(int ac, char **av);
-void    init_diner_input(int ac, char **av, struct Diner *diner);
-void    init_philos_and_forks(struct Philosopher *philos, struct Fork *forks, struct Diner *diner);
-
-//              FORKS MANAGEMENT : forks.c
-int     try_take_fork(struct Philosopher *p, struct Fork *fork);
-void    release_fork(struct Fork *fork);
+        /*   set_the_table.c  */
+int     init_input(int ac, char **av, struct Diner *diner);
+int     init_philos_and_forks(struct Philosopher *philos, struct Fork *forks, struct Diner *diner);
+int     pthread_create_join(struct Philosopher *philos, struct Fork *forks, struct Diner *diner);
+void    clean_mutex(struct Fork *forks, struct Diner *diner);
 
 //              PHILOS' LIVES EXECUTION : actions.c
 void    *start_living(void *p);
-int    philosopher_sleep(struct Philosopher *p);
-int    philosopher_eat(struct Philosopher *p);
-int    philosopher_think(struct Philosopher *p);
+int     philosopher_sleep(struct Philosopher *p);
+int     philosopher_eat(struct Philosopher *p);
+int     philosopher_think(struct Philosopher *p);
 
 //              UTILS : utils.c
 long long   ft_strtoll(char *s);
-void    thread_create_and_join(struct Fork *forks,struct Philosopher *philos, struct Diner *diner);
-TimeMs time_now_ms(TimeMs start_time);
-int check_if_dead(struct Philosopher *p);
-int min(int a, int b);
-void    write_log(struct Philosopher *p, char *s);
+TimeMs  time_now_ms(TimeMs start_time);
+int     min(int a, int b);
 void    clean_mutex(struct Fork *forks, struct Diner *diner);
+void    write_log(struct Philosopher *p, char *s);
+
+//      MONITORING : check_if_end.c 
+int     check_if_dead(struct Philosopher *p);
 int     everyone_ate(struct Diner *diner);
+
+
 
 #endif

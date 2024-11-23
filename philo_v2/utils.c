@@ -6,7 +6,7 @@
 /*   By: aelaen <aelaen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:37:05 by aboukezi          #+#    #+#             */
-/*   Updated: 2024/11/15 15:51:54 by aelaen           ###   ########.fr       */
+/*   Updated: 2024/11/22 14:03:21 by aelaen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,6 @@ TimeMs time_now_ms(TimeMs start_time)
     return (time_in_ms - start_time);
 }
 
-
-void    clean_mutex(struct Fork *forks, struct Diner *diner)
-{
-    int     i;
-
-    i = 0;
-    while(i < diner->nb_of_philos)
-    {
-        pthread_mutex_destroy(&forks[i].mutex);
-        i++;
-    }
-    pthread_mutex_destroy(&diner->is_dead_mutex);
-    pthread_mutex_destroy(&diner->log_mutex);
-}
-
 void    write_log(struct Philosopher *p, char *s)
 {
     if (!pthread_mutex_lock(&p->diner_infos->log_mutex))
@@ -81,14 +66,4 @@ void    write_log(struct Philosopher *p, char *s)
     }
     else
         write_log(p, s);
-}
-
-int	ft_usleep(size_t milliseconds, struct Diner *diner)
-{
-	size_t	start;
-
-	start = time_now_ms(diner->program_start);
-	while ((time_now_ms(diner->program_start) - start) < milliseconds)
-		usleep(500);
-	return (0);
 }
