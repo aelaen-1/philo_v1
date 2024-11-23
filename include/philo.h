@@ -6,7 +6,7 @@
 /*   By: aelaen <aelaen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:57:15 by aboukezi          #+#    #+#             */
-/*   Updated: 2024/11/23 12:28:00 by aelaen           ###   ########.fr       */
+/*   Updated: 2024/11/23 12:44:21 by aelaen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ struct Diner{
         int     all_ate;
         pthread_mutex_t log_mutex;
         pthread_mutex_t is_dead_mutex;
-        // pthread_mutex_t all_ate_mutex;
+        pthread_mutex_t all_ate_mutex;
         TimeMs  program_start;
 };
 
