@@ -6,7 +6,7 @@
 /*   By: aelaen <aelaen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:57:15 by aboukezi          #+#    #+#             */
-/*   Updated: 2024/11/19 16:15:35 by aelaen           ###   ########.fr       */
+/*   Updated: 2024/11/23 12:28:00 by aelaen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdbool.h>
 # include "colors.h"
 # define NO_MEAL_LIMIT -65
+# define USE_USLEEP 0
 
 typedef long long TimeMs;
 
@@ -41,8 +42,10 @@ struct Diner{
         int     nb_of_meals;
         int     sb_is_dead;
         int     dead_philo_id;
+        int     all_ate;
         pthread_mutex_t log_mutex;
         pthread_mutex_t is_dead_mutex;
+        // pthread_mutex_t all_ate_mutex;
         TimeMs  program_start;
 };
 
@@ -87,6 +90,8 @@ TimeMs time_now_ms(TimeMs start_time);
 // TimeMs get_remaining_lifetime(struct Philosopher *p);
 int check_if_dead(struct Philosopher *p);
 int min(int a, int b);
+
+int     everyone_ate(struct Diner *diner);
 
 
 #endif

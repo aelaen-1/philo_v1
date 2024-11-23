@@ -49,9 +49,11 @@ void init_input(int ac, char **av, struct Diner *diner)
 {
     pthread_mutex_init(&diner->is_dead_mutex, NULL);
     pthread_mutex_init(&diner->log_mutex, NULL);
+    // pthread_mutex_init(&diner->all_ate_mutex, NULL);
     diner->program_start = time_now_ms(0);
     diner->sb_is_dead = 0;
     diner->dead_philo_id = -1;
+    // diner->all_ate = 0;
     diner->nb_of_philos = ft_strtoll(av[1]);
     diner->time_to_die = ft_strtoll(av[2]); 
     diner->time_to_eat = ft_strtoll(av[3]);
